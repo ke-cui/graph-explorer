@@ -47,6 +47,10 @@ import { DefaultToolbar, ToolbarProps } from './toolbar';
 import { WorkspaceMarkup, WorkspaceMarkupProps } from './workspaceMarkup';
 import { WorkspaceEventHandler, WorkspaceEventKey } from './workspaceContext';
 import { forceLayout, applyLayout } from '../viewUtils/layout';
+import { RDFDataProvider } from "../data/rdf/rdfDataProvider";
+import axios from "axios";
+
+const N3Parser: any = require('rdf-parser-n3');
 
 const GRAPH_EXPLORER_WEBSITE = 'https://graph-explorer.org/';
 const GRAPH_EXPLORER_LOGO_SVG: string | undefined = undefined;
@@ -54,6 +58,7 @@ const GRAPH_EXPLORER_LOGO_SVG: string | undefined = undefined;
 export interface WorkspaceProps {
   /** Saves diagram layout (position and state of elements and links). */
   onSaveDiagram?: (workspace: Workspace) => void;
+  onLoadDiagram?: (workspace: Workspace) => void;
   /** Persists authored changes in the editor. */
   onPersistChanges?: (workspace: Workspace) => void;
   onPointerDown?: (e: PointerEvent) => void;
@@ -366,9 +371,11 @@ export class Workspace extends Component<WorkspaceProps, WorkspaceState> {
   getModel() {
     return this.model;
   }
+
   getDiagram() {
     return this.view;
   }
+
   getEditor() {
     return this.editor;
   }
@@ -431,6 +438,64 @@ export class Workspace extends Component<WorkspaceProps, WorkspaceState> {
     });
   };
 
+  private readFileAsync(file: File) {
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        resolve(reader.result as string);
+      };
+
+      reader.onerror = reject;
+      reader.readAsBinaryString(file);
+    });
+  }
+
+  private readRemoteFileAsync(uri: string) {
+    const promise = axios.get(uri);
+    return promise.then(response => response.data);
+  }
+
+  private async processFile(file: File) {
+    const fileContent: string = await this.readFileAsync(file);
+    this.loadDiagramModel(fileContent);
+  }
+
+  private async processRemoteFile(uri: string) {
+    const fileContent: string = await this.readRemoteFileAsync(uri);
+    this.loadDiagramModel(fileContent);
+  }
+
+  private loadDiagramModel(fileContent: string) {
+    const dataProvider = new RDFDataProvider({
+      // TODO we're just supporting TTL files. Extend the support
+      data: [
+        {
+          content: fileContent,
+          type: 'text/turtle'
+        },
+      ],
+      acceptBlankNodes: false,
+      dataFetching: false,
+      parsers: {
+        'text/turtle': new N3Parser(),
+      },
+    });
+
+    this.getModel().importLayout({
+      validateLinks: true,
+      dataProvider
+    });
+  }
+
+  onLoadDiagram = (file: File) => {
+    this.processFile(file);
+  };
+
+  onFetchDiagram = (uri: string) => {
+    this.processRemoteFile(uri);
+  }
+
   exportPng = (fileName?: string) => {
     fileName = fileName || 'diagram.png';
     this.markup.paperArea
@@ -485,6 +550,7 @@ export class Workspace extends Component<WorkspaceProps, WorkspaceState> {
   centerTo = (paperPosition?: { x: number; y: number }) => {
     this.markup.paperArea.centerTo(paperPosition);
   };
+
 }
 
 interface ToolbarWrapperProps {
@@ -520,6 +586,8 @@ class ToolbarWrapper extends Component<ToolbarWrapperProps, {}> {
       onExportPNG: workspace.exportPng,
       canSaveDiagram,
       onSaveDiagram: onSaveDiagram ? () => onSaveDiagram(workspace) : undefined,
+      onLoadDiagram: workspace.onLoadDiagram,
+      onFetchDiagram: workspace.onFetchDiagram,
       canPersistChanges,
       onPersistChanges: onPersistChanges
         ? () => onPersistChanges(workspace)

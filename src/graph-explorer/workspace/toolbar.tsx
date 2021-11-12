@@ -1,10 +1,13 @@
 import * as React from 'react';
 
 import { WorkspaceLanguage } from './workspace';
+import { LoadPopup } from "./loadPopup";
 
 export interface ToolbarProps {
   canSaveDiagram?: boolean;
   onSaveDiagram?: () => void;
+  onLoadDiagram?: (file: File) => void;
+  onFetchDiagram?: (uri: string) => void;
   canPersistChanges?: boolean;
   onPersistChanges?: () => void;
   onForceLayout?: () => void;
@@ -38,6 +41,14 @@ export class DefaultToolbar extends React.Component<ToolbarProps, {}> {
   private onExportPNG = () => {
     this.props.onExportPNG();
   };
+
+  private renderLoadFileButton() {
+    return (
+      <LoadPopup onFetchDiagram={this.props.onFetchDiagram}
+                 onDropAccepted={this.props.onLoadDiagram}
+                 {...this.props} />
+    );
+  }
 
   private renderSaveDiagramButton() {
     if (!this.props.onSaveDiagram) {
@@ -99,6 +110,7 @@ export class DefaultToolbar extends React.Component<ToolbarProps, {}> {
     return (
       <div className={CLASS_NAME}>
         <div className="graph-explorer-btn-group graph-explorer-btn-group-sm">
+          {this.renderLoadFileButton()}
           {this.renderSaveDiagramButton()}
           {this.renderPersistAuthoredChangesButton()}
           {this.props.onClearAll ? (
