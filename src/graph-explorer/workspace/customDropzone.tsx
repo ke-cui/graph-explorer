@@ -10,7 +10,7 @@ export const CustomDropzone = (props: CustomDropzoneProps) => {
 
   const onDropAccepted = useCallback(acceptedFiles => {
     props.onDropAccepted(acceptedFiles[0]);
-  }, []);
+  }, [props]);
 
   const {
     getRootProps,
@@ -35,7 +35,7 @@ export const CustomDropzone = (props: CustomDropzoneProps) => {
     <div className="container">
       <div {...getRootProps({style})}>
         <input {...getInputProps()} />
-        <p>Drag 'n' drop some files here, or click to select files</p>
+        <p>Drag &apos;n&apos; drop some files here, or click to select files</p>
       </div>
     </div>
   );
