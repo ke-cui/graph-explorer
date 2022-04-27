@@ -68,7 +68,7 @@
     "html-webpack-plugin": "5.5.0",
     "node-polyfill-webpack-plugin": "1.1.4",
     "prettier": "2.6.2",
-    "raw-loader": "0.5.1",
+    "raw-loader": "3.1.0",
     "rdf-parser-jsonld": "1.1.0",
     "rdf-parser-n3": "0.3.0",
     "rdf-parser-rdfxml": "0.3.1",
