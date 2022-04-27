@@ -74,7 +74,7 @@
     "rdf-parser-rdfxml": "0.3.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "sass": "^1.50.1",
+    "sass": "1.51.0",
     "sass-loader": "^12.6.0",
     "style-loader": "0.23.0",
     "ts-loader": "6.2.1",
