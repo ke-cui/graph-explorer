@@ -40,7 +40,7 @@
     "n3": "~1.16.0",
     "rdf-ext": "~2.0.0",
     "webcola": "^3.4.0",
-    "whatwg-fetch": "~2.0.2"
+    "whatwg-fetch": "~3.6.0"
   },
   "peerDependencies": {
     "react": "^16.0.0 || ^17.0.0 || ^18.0.0",
