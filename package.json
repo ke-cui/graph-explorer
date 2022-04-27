@@ -86,7 +86,7 @@
     "webpack-dev-server": "4.8.1"
   },
   "resolutions": {
-    "@types/react": "17.0.44"
+    "@types/react": "18.0.8"
   },
   "main": "dist/graph-explorer.js",
   "typings": "dist/graph-explorer.d.ts"
