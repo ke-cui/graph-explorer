@@ -43,8 +43,8 @@
     "whatwg-fetch": "~2.0.2"
   },
   "peerDependencies": {
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "react": "^16.0.0 || ^17.0.0",
+    "react-dom": "^16.0.0 || ^17.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.17.9",
@@ -72,8 +72,8 @@
     "rdf-parser-jsonld": "1.1.0",
     "rdf-parser-n3": "1.1.1",
     "rdf-parser-rdfxml": "0.3.1",
-    "react": "16.14.0",
-    "react-dom": "16.14.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
     "sass": "1.51.0",
     "sass-loader": "12.6.0",
     "style-loader": "3.3.1",
