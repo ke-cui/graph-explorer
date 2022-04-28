@@ -4,5 +4,5 @@
     "local>ashleycaselli/renovate-config:node"
   ],
   "includeForks": true,
-  "baseBranches": [ "develop" ]
+  "baseBranches": [ "master", "develop" ]
 }
