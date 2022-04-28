@@ -1,5 +1,4 @@
 import { createElement, ClassAttributes } from 'react';
-import * as ReactDOM from 'react-dom';
 
 import {
   Workspace,
@@ -7,9 +6,10 @@ import {
   SparqlDataProvider,
   SparqlGraphBuilder,
   WikidataSettings,
-} from '../src/graph-explorer/index';
+} from '../src/graph-explorer';
 
 import { onPageLoad } from './common';
+import { createRoot } from "react-dom/client";
 
 function onWorkspaceMounted(workspace: Workspace) {
   if (!workspace) {
@@ -64,5 +64,6 @@ const props: WorkspaceProps & ClassAttributes<Workspace> = {
 };
 
 onPageLoad((container) => {
-  ReactDOM.render(createElement(Workspace, props), container);
+  const root = createRoot(container!);
+  root.render(createElement(Workspace, props));
 });

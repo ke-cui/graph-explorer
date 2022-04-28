@@ -1,19 +1,15 @@
-import { createElement, ClassAttributes } from 'react';
-import * as ReactDOM from 'react-dom';
+import { ClassAttributes, createElement } from 'react';
+import { createRoot } from 'react-dom/client';
 
 import {
-  Workspace,
-  WorkspaceProps,
+  DBPediaSettings,
   SparqlDataProvider,
   SparqlQueryMethod,
-  DBPediaSettings,
-} from '../src/graph-explorer/index';
+  Workspace,
+  WorkspaceProps,
+} from '../src/graph-explorer';
 
-import {
-  onPageLoad,
-  tryLoadLayoutFromLocalStorage,
-  saveLayoutToLocalStorage,
-} from './common';
+import {onPageLoad, saveLayoutToLocalStorage, tryLoadLayoutFromLocalStorage,} from './common';
 
 function onWorkspaceMounted(workspace: Workspace) {
   if (!workspace) {
@@ -39,7 +35,7 @@ function onWorkspaceMounted(workspace: Workspace) {
           PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
           PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
           PREFIX owl:  <http://www.w3.org/2002/07/owl#>
-        
+
           SELECT distinct ?class ?label ?parent WHERE {
             ?class a owl:Class.
             ?class rdfs:label ?label.
@@ -64,5 +60,6 @@ const props: WorkspaceProps & ClassAttributes<Workspace> = {
 };
 
 onPageLoad((container) => {
-  ReactDOM.render(createElement(Workspace, props), container);
+  const root = createRoot(container!);
+  root.render(createElement(Workspace, props));
 });

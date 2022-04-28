@@ -1,17 +1,18 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 
 import {
   Workspace,
   WorkspaceProps,
   DemoDataProvider,
   ToolbarProps,
-} from '../src/graph-explorer/index';
+} from '../src/graph-explorer';
 import {
   onPageLoad,
   tryLoadLayoutFromLocalStorage,
   saveLayoutToLocalStorage,
 } from './common';
+import { createRoot } from "react-dom/client";
+import { createElement } from "react";
 
 const CLASSES = require('./resources/classes.json');
 const LINK_TYPES = require('./resources/linkTypes.json');
@@ -92,5 +93,6 @@ const props: WorkspaceProps & React.ClassAttributes<Workspace> = {
 };
 
 onPageLoad((container) => {
-  ReactDOM.render(React.createElement(Workspace, props), container);
+  const root = createRoot(container!);
+  root.render(createElement(Workspace, props));
 });

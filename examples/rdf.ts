@@ -1,12 +1,13 @@
 import { createElement, ClassAttributes } from 'react';
-import * as ReactDOM from 'react-dom';
+import { createRoot } from "react-dom/client";
+
 
 import {
   Workspace,
   WorkspaceProps,
   RDFDataProvider,
   GroupTemplate,
-} from '../src/graph-explorer/index';
+} from '../src/graph-explorer';
 
 import {
   ExampleMetadataApi,
@@ -87,5 +88,6 @@ const props: WorkspaceProps & ClassAttributes<Workspace> = {
 };
 
 onPageLoad((container) => {
-  ReactDOM.render(createElement(Workspace, props), container);
+  const root = createRoot(container!);
+  root.render(createElement(Workspace, props));
 });
